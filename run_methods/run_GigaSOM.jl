@@ -18,8 +18,15 @@ data = Dict("Levine_32dim.fcs" => [5:36;],
             "Levine_13dim.fcs" => [1:13;],
             "Samusik_01.fcs" => [9:47;],
             "Samusik_all.fcs" => [9:47;],
-            "Nilsson_rare" => [5:7; 9:18],
+            "Nilsson_rare.fcs" => [5:7; 9:18],
             "Mosmann_rare.fcs" => [7:9; 11:21])
 
+# for (k,v) in data
+#     println(k)
+# end
+
+
+# fcsRaw = readFlowset("Nilsson_rare.fcs")
+# cleanNames!(fcsRaw)
 
 println("Hello World!")
