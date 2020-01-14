@@ -98,7 +98,12 @@ clus <- lapply(files_out, function(f) {
   read.table(f, header = TRUE, stringsAsFactors = FALSE)[, "label"]
 })
 
-clus <- read.csv(paste0(DATA_DIR,"/clustering_Levine_32dim_GigaSOM_50_metaCluster.csv"))
+# clus <- read.csv(paste0(DATA_DIR,"/clustering_Levine_13dim_GigaSOM_50_metaCluster.csv"))
+
+clus <- read.csv(paste0(DATA_DIR,"/50-metaCluster_Samusik_all.fcs.csv"))
+clus <- read.csv(paste0(DATA_DIR,"/50-metaCluster_Samusik_01.fcs.csv"))
+clus <- read.csv(paste0(DATA_DIR,"/50-metaCluster_Levine_32dim.fcs.csv"))
+clus <- read.csv(paste0(DATA_DIR,"/50-metaCluster_Levine_13dim.fcs.csv"))
 
 sapply(clus, length)
 
@@ -115,7 +120,7 @@ sapply(tbl, length)
 
 for (i in 1:length(clus)) {
   if (!is_FlowCAP[i]) {
-    print(table(clus[[i]], clus_truth[[i]]))
+    print(table(clus[[i]], clus_truth$Levine_13dim))
   }
 }
 
@@ -126,10 +131,16 @@ clus_FlowSOM_pre <- clus
 
 
 
-res1 <- helper_match_evaluate_multiple(clus[[i]], clus_truth[[i]])
-res1 <- helper_match_evaluate_multiple(clus$index, clus_truth$Levine_32dim)
+# res1 <- helper_match_evaluate_multiple(clus[[i]], clus_truth[[2]])
+res1 <- helper_match_evaluate_multiple(clus[[1]], clus_truth$Levine_13dim)
 res1$F1
 res1
+
+
+#
+
+# i
+# clus
 ###################################
 ### match clusters and evaluate ###
 ###################################
