@@ -27,15 +27,26 @@ data = Dict("Levine_32dim.fcs" => [5:36;],
 
 
 fcsRaw = readFlowFrame("Levine_32dim.fcs")
+# fcsRaw = readFlowFrame("Levine_13dim.fcs")
+# fcsRaw = readFlowFrame("Samusik_01.fcs")
+# fcsRaw = readFlowFrame("Samusik_all.fcs")
+
 cleanNames!(fcsRaw)
 
-daf = fcsRaw["Levine_32dim.fcs"]
+# daf = fcsRaw["Levine_32dim.fcs"]
+# daf = fcsRaw["Levine_13dim.fcs"]
+daf = fcsRaw
+# daf = fcsRaw["Samusik_all.fcs"]
+
 daf_sub = daf[:, 5:36]
+# daf_sub = daf[:, 1:13]
+# daf_sub = daf[:, 9:47]
+
 p = addprocs(2)
 
 @everywhere using GigaSOM
 
-som2 = initGigaSOM(daf_sub, 10, 10)
+som2 = initGigaSOM(daf_sub, 20, 20)
 @time som2 = trainGigaSOM(som2, daf_sub, epochs = 10)
 winners = mapToGigaSOM(som2, daf_sub)
 CSV.write("clustering_Levine_32dim_GigaSOM.csv", winners)
@@ -55,22 +66,22 @@ end
 using RCall
 using Statistics
 using LinearAlgebra
-Pkg.add("StatsBase")
+# Pkg.add("StatsBase")
 using StatsBase
 @rlibrary consens2
 
 plot_outdir = "consensus_plots"
-nmc = 40
+nmc = 50
 codesT = Matrix(codes')
 
 mc = ConsensusClusterPlus_2(codesT, maxK = nmc, reps = 100,
 							pItem = 0.9, pFeature = 1,
 							clusterAlg = "hc", innerLinkage = "average", finalLinkage = "average",
-							distance = "euclidean", seed = 1234)
+							distance = "euclidean");
 
 cell_clustering = mc[winners.index]
 # cell_clustering = convert(DataFrame, cell_clustering')
 cc = DataFrame(id = cell_clustering)
-CSV.write("clustering_Levine_32dim_GigaSOM_40_metaCluster.csv", cc)
+CSV.write("clustering_Levine_32dim_GigaSOM_50_metaCluster.csv", cc)
 
 println("Hello World!")
